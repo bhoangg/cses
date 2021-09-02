@@ -12,11 +12,32 @@ ofstream output("output.txt");
 #define cout output
 #endif
 
+vector<pair<int, int>> trace;
+
 int backtrack(int st, int dst, int mid,  int n){
-        
+    int ans=0;
+    if(n==0)
+        return 0;
+    
+    //1. move n-1 dish from st to mid
+    ans+= backtrack(st, mid, dst, n-1);
+    //2. move 1 dish from st to dst
+    ans +=1;
+    trace.push_back({st,dst});
+    //3. move n-1 dish from mid to dst
+    ans+= backtrack(mid, dst, st, n-1);
+
+    return ans;
 }
 
 void solve(int n){
+
+    int ans = backtrack(1, 3, 2, n);
+    
+    cout << ans << endl;
+    for(auto it:trace){
+        cout << it.first << " " << it.second << endl;
+    }
 
 }
 
