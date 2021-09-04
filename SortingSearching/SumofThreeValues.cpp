@@ -5,7 +5,7 @@ using namespace std;
 #define endl "\n"
 #define ll long long
  
-#ifdef LOCAL
+#ifdef LOCAL1
 fstream input("test_input.txt");
 #define cin input
 #endif
@@ -22,25 +22,31 @@ int main()
  
     int n, x;
     cin >> n >> x;
-    tuple<int, int, int> ans;
-    vector<int> a(n,0);
+    array<int,2> a[n];
  
     for(int i=0; i<n; i++){
-        cin >> a[i];
+        cin >> a[i][0]; 
+        a[i][1]=i;
     }
+    sort(a, a+n);
+    // for(int i=0; i<n; i++){
+    //     cout << a[i][0] << " "; 
+    //     cout << a[i][1] << endl;
+    // }
     
-    for(int i=0; i<n; i++){
-        int target = x - a[i];
+    for(int i=0; i<n-1; i++){
+        int target = x - a[i][0];
         // sum of 2
-        map<int, int> sum2;
-        for(int j=i+1; j<n; j++){
-            int c = target - a[j];
-            if(sum2.find(c)==sum2.end()){
-                sum2[a[j]]=j;
-            } else {
-                cout << i+1 << " " << j+1 << " " << sum2[c]+1 << endl;
+        int f=i+1, l=n-1;
+        while(f<l){
+            int s=a[f][0]+a[l][0];
+            if(s==target){
+                cout << a[i][1]+1 << " " <<  a[f][1]+1 << " " << a[l][1]+1 << endl;
                 return 0;
-            }
+            } else if(s<target){
+                f++;
+            } else
+                l--;
         }
     }
     cout << "IMPOSSIBLE" << endl;
