@@ -27,29 +27,22 @@ int main()
     for(int i=0; i<n; i++){
         cin >> k[i];
     }
-    int ans=0;
-    vector<int> m(n,0), task(n,0);
-    int done=0;
-    while(1){
-        if(done==n)
-            break;
+    ll lo=1, hi=1e18;
+    ll ans=0;
+    while(lo<=hi){
+        ll mid=(lo+hi)/2;
+        ll sum=0;
         for(int i=0; i<n; i++){
-            if(m[i]==0&&t!=0){
-                m[i]=k[i];
-                task[i]++;
-                t--;    
-            }
-            else if(m[i]!=0){
-                m[i]--;
-            } else {
-                done++;
-            }
+            sum += min(mid/k[i],(ll)1e9);
         }
-        ans++;
+        if(sum>=t)
+        {
+            ans=mid;
+            hi=mid-1;
+        } else {
+            lo=mid+1;
+        }
     }
-    // for(int i=0; i<n; i++)
-    //     cout << task[i] << " ";
-    // cout << endl;
     cout << ans << endl;
 
     return 0;
