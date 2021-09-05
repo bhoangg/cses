@@ -2,16 +2,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-#ifdef LOCAL1
-fstream input("test_input.txt");
-#define cin input
-#endif
-
 #define endl "\n"
 #define ll long long
 #define ar array
 
-const int mxN = 2e5;
+#ifdef LOCAL1
+fstream input("test_input.txt");
+#define cin input
+#endif
 
 void solve(int n){
 
@@ -22,8 +20,8 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n;
-    cin >> n;
+    int n,k;
+    cin >> n >> k;
     ar<int,3> a[n];
 
     for(int i=0; i<n; i++){
@@ -33,21 +31,24 @@ int main()
     sort(a,a+n);
 
     set<ar<int,2>> s;
-    int ans[n];
+    int ans[n]={0,};
+    int ans2=0;
     for(int i=0; i<n; i++){
-        auto it=s.lower_bound({a[i][1]});
+        auto it=s.lower_bound({a[i][1]+1});
         if(it!=s.begin()){
             --it;
             ans[a[i][2]]=(*it)[1];
             s.erase(it);
-        } else
+        } else{
             ans[a[i][2]]=s.size();
-        s.insert({a[i][0],ans[a[i][2]]});
+        }
+        if(s.size()<k){
+            s.insert({a[i][0],ans[a[i][2]]});
+            ans2++;
+        }
     }
 
-    cout << s.size() << endl;
-    for(int i=0; i<n; i++)
-        cout << ans[i]+1 << " ";
+    cout << ans2 << endl;
 
     return 0;
 }
